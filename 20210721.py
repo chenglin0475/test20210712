@@ -73,7 +73,8 @@ def addUser():
     money = int(input("请输入您的开户初始余额："))  # 将输入金额转换成int类型
     # 随机产生8为数字
     account = random.randint(10000000, 99999999)
-
+    if account in bank:
+        account = random.randint(10000000, 99999999)
     status = bank_addUser(account, username, password, country, province, street, gate, money)
 
     if status == 3:
