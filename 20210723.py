@@ -27,8 +27,8 @@ def meiGeYue():
         cols = st.ncols
         sum = 0
         for j in range(1,rows):
-            danJia = int(st.cell_value(j,2))
-            xiaoLiang = int(st.cell_value(j,4))
+            danJia = float(st.cell_value(j,2))
+            xiaoLiang = float(st.cell_value(j,4))
             xiaoShouE = danJia * xiaoLiang * rows
             sum = sum + xiaoShouE
             pass
@@ -40,7 +40,7 @@ def quanNian():
     meiGeYue()
     sum = 0
     for i in yue:
-        sum = sum + int(meiYueXiaoShou[i])
+        sum = sum + float(meiYueXiaoShou[i])
         pass
     return sum
 #每种衣服的销售总额
@@ -52,8 +52,8 @@ def yfXiaoShou():
         sum = 0
         for j in range(1,rows):
             yf = st.cell_value(j, 1)
-            danJia = int(st.cell_value(j,2))
-            xiaoLiang = int(st.cell_value(j,4))
+            danJia = float(st.cell_value(j,2))
+            xiaoLiang = float(st.cell_value(j,4))
             if yf not in meiZhongYiFu:
                 meiZhongYiFu[yf] = 0
                 pass
@@ -77,7 +77,7 @@ def jiDu():
     q = 0
     d = 0
     for i in yue:
-        j = int(meiYueXiaoShou[i])
+        j = float(meiYueXiaoShou[i])
         if i == "12月" or i == "1月" or i == "2月":
             d = d + 1
             jiduzb["冬季占比"] = jiduzb["冬季占比"] + j
