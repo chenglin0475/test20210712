@@ -6,7 +6,6 @@ import datetime
 import random
 
 # 1.准备一个数据库 和 银行名称
-import time
 import pymysql
 import time
 
@@ -54,10 +53,10 @@ class bank_user:
 
     pass
 param = []
-#打包主键在最后
-def paramforupd(self):
-    param = [self.username,self.password,self.country, self.province, self.street, self.door, self.money, self.bankname,self.account]
-    return param
+# #打包主键在最后
+# def paramforupd(self):
+#     param = [self.username,self.password,self.country, self.province, self.street, self.door, self.money, self.bankname,self.account]
+#     return param
 #打包主键主键在第一位
 def paramforinsert(self):
     # time = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
@@ -88,11 +87,36 @@ def saveorupd(self):
     insql = "insert into  bank_user values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     #def __init__(self, account, username, password, country, province, street, door, money, registerDate, bankname):
     updsql = "update bank_user set " \
-             "username = %s,password = %s,country = %s,province = %s," \
-             "street = %s,door = %s,money = %s,bankname = %s " \
-             "where account = %s "
+             # "username = %s,password = %s,country = %s,province = %s," \
+             # "street = %s,door = %s,money = %s,bankname = %s " \
+             # "where account = %s "
     if booleanuser(self.account):
-        cursor.execute(updsql,paramforupd(self))
+        if self.username != None:
+            updsql += " username = '" + self.username + "'"
+            pass
+        if self.password != None:
+            updsql += " ,password = '" + self.password + "'"
+            pass
+        if self.country != None:
+            updsql += " ,country = '" + self.country + "'"
+            pass
+        if self.province != None:
+            updsql += " ,province = '" + self.province + "'"
+            pass
+        if self.street != None:
+            updsql += " ,street = '" + self.street + "'"
+            pass
+        if self.door != None:
+            updsql += " ,door = '" + self.door + "'"
+            pass
+        if self.money != None:
+            updsql += " ,money = " + str(self.money)
+            pass
+        if self.bankname != None:
+            updsql += " ,bankname = '" + self.bankname + "'"
+            pass
+        updsql += " where account = " + self.account
+        cursor.execute(updsql)
         pass
     else:
         cursor.execute(insql,paramforinsert(self))
@@ -192,8 +216,18 @@ def login():
     while True:
         bank_zhanghao = input("账号：")
         bank_mima = input("密码：")
-        bank_zhanghao = int(bank_zhanghao)
         if booleanuser(bank_zhanghao):
+            if bank_zhanghao.isdigit():
+                bank_zhanghao = int(bank_zhanghao)
+                pass
+            else:
+                print("账号或密码输入错误请重新输入")
+                islogin = input("是否继续登录：yes or no?")
+                if islogin == "no":
+                    break
+                    pass
+                else:
+                    pass
             if bank_mima == selectuser(bank_zhanghao).password:
                 global loginid
                 loginid = 1
