@@ -21,57 +21,55 @@ class inmation:
         pass
     pass
 
-def maketion(self):
-    param = [self.tian,self.fname,self.danjia,self.shuliang,self.risale]
-    sql = "insert into yfsale12(tian,fname,danjia,shuliang,risale)values(%s,%s,%s,%s,%s)"
-    save(sql,param)
-    pass
-def seltion():
-    sql = "select * from yfsale12"
-    return sel(sql)
-def count():
-    sql = "select count(*) from yfsale12"
-    return countyf(sql)
+# def maketion(self):
+#     param = [self.tian,self.fname,self.danjia,self.shuliang,self.risale]
+#     sql = "insert into yfsale12(tian,fname,danjia,shuliang,risale)values(%s,%s,%s,%s,%s)"
+#     save(sql,param)
+#     pass
 
-wd = xlrd.open_workbook(filename="12月份衣服销售数据.xlsx", encoding_override=True)
-st = wd.sheet_by_name("12月份各种服饰销售情况")
-rows = st.nrows
-cols = st.ncols
-for i in range(1,rows):
-    tian = st.cell_value(i,0)
-    fname = st.cell_value(i,1)
-    danjia = float(st.cell_value(i,2))
-    shuliang = int(st.cell_value(i,3))
-    risale = int(st.cell_value(i,4))
-    saleobeject = inmation(tian,fname,danjia,shuliang,risale)
-    maketion(saleobeject)
-    pass
-print("excel_to_DB")
-# 创建一个workbook 设置编码
-workbook = xlwt.Workbook(encoding = 'utf-8')
-# 创建一个worksheet
-worksheet = workbook.add_sheet('新sheet')
-# 写入excel
-max = count()
-data = seltion()
-worksheet.write(0, 0, label="日期")
-worksheet.write(0, 1, label="服装名称")
-worksheet.write(0, 2, label="价格/每件")
-worksheet.write(0, 3, label="单价")
-worksheet.write(0, 4, label="单日销量")
-for i in range(1,max):
-    j = i - 1
-    # 参数对应 行, 列, 值
-    worksheet.write(i, 0, label=data[j][1])
-    worksheet.write(i, 1, label=data[j][2])
-    worksheet.write(i, 2, label=data[j][3])
-    worksheet.write(i, 3, label=data[j][4])
-    worksheet.write(i, 4, label=data[j][5])
-    pass
-# 保存
-# workbook.save('D:\PythonTool\test\day9\12月份衣服销售数据1.xlsx')
-workbook.save('12月份衣服销售数据1.xlsx')
-print("DB_to_excel")
+filename="12月份衣服销售数据.xlsx"
+sheet = "12月份各种服饰销售情况"
+table = " yfsale12 "
+filename1="12月份衣服销售数据1.xlsx"
+sheet1 = "新sheet"
+excel_to_db(filename,sheet,table)
+db_to_excel(filename1,sheet1,table)
+# wd = xlrd.open_workbook(filename="12月份衣服销售数据.xlsx", encoding_override=True)
+# st = wd.sheet_by_name("12月份各种服饰销售情况")
+# rows = st.nrows
+# cols = st.ncols
+# for i in range(1,rows):
+#     tian = st.cell_value(i,0)
+#     fname = st.cell_value(i,1)
+#     danjia = float(st.cell_value(i,2))
+#     shuliang = int(st.cell_value(i,3))
+#     risale = int(st.cell_value(i,4))
+#     saleobeject = inmation(tian,fname,danjia,shuliang,risale)
+#     maketion(saleobeject)
+#     pass
+# print("excel_to_DB")
+# # 创建一个workbook 设置编码
+# workbook = xlwt.Workbook(encoding = 'utf-8')
+# # 创建一个worksheet
+# worksheet = workbook.add_sheet('新sheet')
+# # 写入excel
+# max = count()
+# data = seltion()
+#
+# for i in range(1,max):
+#     max1 = len(data[i - 1])-1
+#     for j in range(0,int(max1)):
+#         # 参数对应 行, 列, 值
+#         worksheet.write(i, j, label=data[i-1][j+1])
+#     # worksheet.write(i, 1, label=data[i-1][2])
+#     # worksheet.write(i, 2, label=data[i-1][3])
+#     # worksheet.write(i, 3, label=data[i-1][4])
+#     # worksheet.write(i, 4, label=data[i-1][5])
+#     pass
+# # 保存
+# # workbook.save('D:\PythonTool\test\day9\12月份衣服销售数据1.xlsx')
+# workbook.save('12月份衣服销售数据1.xlsx')
+# print("DB_to_excel")
 
 
 
