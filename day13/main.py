@@ -1,3 +1,4 @@
+from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 
 from HTMLTestRunner import HTMLTestRunner
@@ -5,6 +6,8 @@ import unittest
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
+import smtplib
+from email.utils import formataddr
 
 tests = unittest.defaultTestLoader.discover(r"D:\PythonTool\test\day13",pattern="test*.py")
 runner = HTMLTestRunner.HTMLTestRunner(
@@ -15,39 +18,52 @@ runner = HTMLTestRunner.HTMLTestRunner(
 )
 runner.run(tests)
 
-import smtplib
-from email.mime.text import MIMEText
-from email.utils import formataddr
-
-my_sender = '2015539611@qq.com'  # 发件人邮箱账号
-my_pass = 'tiwblinqiacxdcef'  # 发件人邮箱密码
-my_user = '2015539611@qq.com'  # 收件人邮箱账号，我这边发送给自己
 
 
-def mail():
-    ret = True
-    try:
-        mail_msg = """
-                <p>Python 邮件发送测试...</p>
-                <p><a href="http://localhost:D/PythonTool/test/day13/计算器.html">这是一个链接</a></p>
-                """
-        msg = MIMEText(mail_msg, 'html', 'utf-8')
-        # msg = MIMEMultipart()
-        msg['From'] = formataddr(["Fromcheng", my_sender])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-        msg['To'] = formataddr(["FK", my_user])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
-        msg['Subject'] = "发送邮件测试"  # 邮件的主题，也可以说是标题
-
-        server = smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是25
-        server.login(my_sender, my_pass)  # 括号中对应的是发件人邮箱账号、邮箱密码
-        server.sendmail(my_sender, [my_user, ], msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
-        server.quit()  # 关闭连接
-    except Exception:  # 如果 try 中的语句没有执行，则会执行下面的 ret=False
-        ret = False
-    return ret
 
 
-ret = mail()
-if ret:
-    print("邮件发送成功")
-else:
-    print("邮件发送失败")
+
+def sendEmail(title, text, send, to, passwd, smtp_server, file):
+    '''
+    发送带附件的邮件
+    :param title: 邮件标题
+    :param text: 邮件正文
+    :param send: 发送者邮箱
+    :param passwd: 授权码
+    :param to: 接收者邮箱
+    :param smtp_server: 发送邮件的服务器
+    :param file: 需要发送的附件
+    :return:
+    '''
+    msg = MIMEMultipart()
+    msg['From'] = send
+    msg['To'] = to
+    #文字部分
+    msg['Subject'] = title  # 主题
+    strstr=text  #文字内容
+    att = MIMEText(strstr,'plain','utf-8')
+    msg.attach(att)
+    #附件
+    att = MIMEApplication(open(file,'rb').read())  #你要发送的附件地址
+    att.add_header('Content-Disposition', 'attachment', filename=file) #filename可随意取名
+    msg.attach(att)
+    server = smtplib.SMTP()
+    server.connect(smtp_server)   #连接smtp邮件服务器
+    server.login(send,passwd)   #登录smtp邮件服务器
+    server.sendmail(send, to, msg.as_string())    #发送
+    server.close()  #关闭
+
+
+if __name__ == '__main__':
+
+    smtp_server = 'smtp.qq.com'  # 使用QQ邮箱的SMTP服务器，可切换
+    from_mail = '2015539611@qq.com'
+    mail_pass = 'tiwblinqiacxdcef'
+    to_mail = '2015539611@qq.com'
+    title = 'test'
+    text = 'send test'
+    file = '计算器.html'
+    sendEmail(title=title, text=text, send=from_mail, to=to_mail, passwd=mail_pass, smtp_server=smtp_server, file=file)
+# my_sender = '2015539611@qq.com'  # 发件人邮箱账号
+# my_pass = 'tiwblinqiacxdcef'  # 发件人邮箱密码
+# my_user = '2015539611@qq.com'  # 收件人邮箱账号，我这边发送给自己
