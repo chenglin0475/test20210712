@@ -1,0 +1,7 @@
+f = open(r"无标题.png",mode="rb" )
+f1 = open(r"D:\\无标题.png",mode="wb" )
+data = f.read()
+f1.write(data)
+f1.flush()
+f.close()
+f1.close()
