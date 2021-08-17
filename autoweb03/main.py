@@ -24,7 +24,7 @@ def send():
     sender = "2015539611@qq.com"  # 发送人的邮件
     recevises = ["chenglin0475@163.com"]  # 接收人
     mail_host = "smtp.qq.com"
-    password = "tiwblinqiacxdcef"
+    password = "tiwblinqiacf"
     subject = "这是一封测试邮件"
 
     # message = MIMEText("这是一个计算器的测试邮件！！！","plain","utf-8")
